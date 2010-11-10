@@ -14,6 +14,7 @@ Allows you to dump a bunch of fake data into the system for testing.
 == Installation ==
 1. Copy the entire /generatedata/ directory into your /plugins/ directory.
 2. Activate the plugin.
+3. Go to plugin settings and generate reports.
 
 == Changelog ==
 v0.1 - November 9, 2010
