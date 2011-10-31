@@ -3,15 +3,15 @@
  * Generate Data Settings Controller
  *
  * PHP version 5
- * LICENSE: This source file is subject to LGPL license 
+ * LICENSE: This source file is subject to LGPL license
  * that is available through the world-wide-web at the following URI:
  * http://www.gnu.org/copyleft/lesser.html
- * @author	   Ushahidi Team <team@ushahidi.com> 
+ * @author	   Ushahidi Team <team@ushahidi.com>
  * @package    Ushahidi - http://source.ushahididev.com
- * @module	   Generate Date Settings Controller	
+ * @module	   Generate Date Settings Controller
  * @copyright  Ushahidi - http://www.ushahidi.com
- * @license    http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL) 
-* 
+ * @license    http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
+*
 */
 
 class Generatedata_Settings_Controller extends Admin_Controller
@@ -19,14 +19,14 @@ class Generatedata_Settings_Controller extends Admin_Controller
 	public function index()
 	{
 		$this->template->this_page = 'addons';
-		
+
 		// Standard Settings View
 		$this->template->content = new View("admin/plugins_settings");
 		$this->template->content->title = "Generate Data Settings";
-		
+
 		// Settings Form View
 		$this->template->content->settings_form = new View("generatedata/admin/generatedata_settings");
-		
+
 		// setup and initialize form field names
         $form = array
         (
@@ -57,18 +57,18 @@ class Generatedata_Settings_Controller extends Admin_Controller
             {
                 // Yes! everything is valid
                 // CREATE REPORTS HERE
-                
+
                 // Just double check it's a positive integer value
                 $num_make = abs((int)$post->thismanyreports);
-                
+
                 $categories = Category_Model::categories();
-                
+
                 $cat_arr = array();
                 foreach($categories as $cat)
                 {
                 	$cat_arr[] = $cat['category_id'];
                 }
-                
+
                 $i = 0;
                 while($i < $num_make)
                 {
@@ -78,9 +78,9 @@ class Generatedata_Settings_Controller extends Admin_Controller
                 	$latlon = $lat.','.$lon;
                 	$rand_title = Generatedata_Settings_Controller::rand_string(mt_rand(5,40));
                 	$rand_description = Generatedata_Settings_Controller::rand_string(mt_rand(15,1000));
-                	
-                	
-          
+
+
+
                 	// Create Location
                 	$location = new Location_Model();
 	                $location->location_name = $latlon;
@@ -88,7 +88,7 @@ class Generatedata_Settings_Controller extends Admin_Controller
 	                $location->longitude = $lon;
 	                $location->location_date = date("Y-m-d H:i:s",time());
 	                $location->save();
-	                
+
 	                // Create Report
 	                $incident = new Incident_Model();
 		            $incident->location_id = $location->id;
@@ -104,7 +104,7 @@ class Generatedata_Settings_Controller extends Admin_Controller
 		            $incident->incident_verified = mt_rand(0,1);
 		            //Save
 		            $incident->save();
-                	
+
                 	// Set Category (only setting one category per report)
                 	$incident_category = new Incident_Category_Model();
                     $incident_category->incident_id = $incident->id;
@@ -113,7 +113,7 @@ class Generatedata_Settings_Controller extends Admin_Controller
 
                 	$i++;
                 }
-				
+
                 // Everything is A-Okay!
                 $form_saved = TRUE;
 
@@ -143,16 +143,16 @@ class Generatedata_Settings_Controller extends Admin_Controller
                 'thismanyreports' => '1'
             );
         }
-		
+
 		// Pass the $form on to the settings_form variable in the view
 		$this->template->content->settings_form->form = $form;
-		
+
 		// Other variables
 	    $this->template->content->errors = $errors;
 		$this->template->content->form_error = $form_error;
 		$this->template->content->form_saved = $form_saved;
 	}
-	
+
 	public function rand_string($lenth) {
 		// makes a random alpha numeric string of a given lenth
 		$aZ09 = array_merge(range('A', 'Z'), range('a', 'z'),range(0, 9));
@@ -164,5 +164,5 @@ class Generatedata_Settings_Controller extends Admin_Controller
 			$out .= $aZ09[mt_rand(0,count($aZ09)-1)];
 		}
 		return $out;
-	} 
+	}
 }
