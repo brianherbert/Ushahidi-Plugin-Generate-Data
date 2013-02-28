@@ -21,7 +21,7 @@ class Generatedata_Settings_Controller extends Admin_Controller
 		$this->template->this_page = 'addons';
 		
 		// Standard Settings View
-		$this->template->content = new View("admin/plugins_settings");
+		$this->template->content = new View("admin/addons/plugin_settings");
 		$this->template->content->title = "Generate Data Settings";
 		
 		// Settings Form View
